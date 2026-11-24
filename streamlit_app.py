@@ -1,6 +1,15 @@
 import streamlit as st
 import os
 from pathlib import Path
+
+# Sync Streamlit Cloud secrets to environment variables if present
+try:
+    for key, val in st.secrets.items():
+        if isinstance(val, str):
+            os.environ.setdefault(key, val)
+except Exception:
+    pass
+
 from app.rag.workflow import ask
 from app.services.ingestion import load_file, chunk_documents
 from app.rag.vectorstore import add_documents
